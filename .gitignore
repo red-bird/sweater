@@ -1,2 +1,5 @@
 # Project exclude paths
 /target/
+
+# Data about access to DB
+/src/main/resources/application.properties
