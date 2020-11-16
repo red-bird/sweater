@@ -1,10 +1,14 @@
 package com.example.sweater.domain.MongoEntities;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 
 public class MongoMessage {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     public String id;
 
     private String text;
