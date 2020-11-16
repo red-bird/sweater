@@ -1,10 +1,11 @@
 package com.example.sweater;
 
-import com.example.sweater.domain.Message;
-import com.example.sweater.repos.MessageRepo;
+import com.example.sweater.domain.MongoEntities.MongoMessage;
+import com.example.sweater.domain.PostgresEntities.PostgresMessage;
+import com.example.sweater.repos.MongoRepo.MongoMessageRepo;
+import com.example.sweater.repos.PostgresRepo.PostgresMessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,8 @@ import java.util.Map;
 @Controller
 public class GreetingController {
     @Autowired
-    private MessageRepo messageRepo;
+//    private PostgresMessageRepo messageRepo;
+    private MongoMessageRepo messageRepo;
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue
@@ -26,8 +28,8 @@ public class GreetingController {
 
     @GetMapping
     public String main(Map<String, Object> model){
-        Iterable<Message> messages = messageRepo.findAll();
-
+//        Iterable<PostgresMessage> messages = messageRepo.findAll();
+        Iterable<MongoMessage> messages = messageRepo.findAll();
         model.put("messages", messages);
 
         return "main";
@@ -36,12 +38,12 @@ public class GreetingController {
     @PostMapping
     public String add(@RequestParam String text, @RequestParam String tag, Map<String,
             Object> model){
-        Message message = new Message(text, tag);
-
+//        PostgresMessage message = new PostgresMessage(text, tag);
+        MongoMessage message = new MongoMessage(text, tag);
         messageRepo.save(message);
 
-        Iterable<Message> messages = messageRepo.findAll();
-
+//        Iterable<PostgresMessage> messages = messageRepo.findAll();
+        Iterable<MongoMessage> messages = messageRepo.findAll();
         model.put("messages", messages);
 
         return "main";
@@ -49,7 +51,8 @@ public class GreetingController {
 
     @PostMapping("filter")
     public String filter(@RequestParam String filter, Map<String, Object> model) {
-        Iterable<Message> messages;
+//        Iterable<PostgresMessage> messages;
+        Iterable<MongoMessage> messages;
         if (filter != null && !filter.isEmpty()){
              messages = messageRepo.findByTag(filter);
         } else {
